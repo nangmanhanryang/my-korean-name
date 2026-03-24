@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 한국어 이름은 | My Korean Name</title>
+  <meta name="description" content="Discover your Korean name based on your name and birthday.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>나의 한국어 이름은</h1>
+      <p class="subtitle" id="inputName"></p>
+    </header>
+
+    <div class="result-card">
+      <div class="season-badge" id="seasonBadge"></div>
+
+      <p class="result-name-intro" id="nameIntro">Your Korean name is</p>
+      <div class="result-korean-name" id="koreanName"></div>
+      <div class="result-hanja" id="hanja"></div>
+      <div class="result-pronunciation" id="pronunciation"></div>
+
+      <div class="divider"></div>
+
+      <div class="result-section">
+        <div class="result-section-label" id="meaningLabel">Name Meaning</div>
+        <p class="result-section-text" id="nameMeaning"></p>
+      </div>
+
+      <div class="result-section">
+        <div class="result-section-label" id="personalityLabel">Your Character</div>
+        <p class="result-section-text" id="personality"></p>
+      </div>
+
+      <div class="share-section">
+        <div class="share-label" id="shareLabel">Share</div>
+        <div class="share-buttons">
+          <button class="btn-share btn-copy" id="copyBtn">Copy Link</button>
+          <a class="btn-share btn-twitter" id="twitterBtn" href="#" target="_blank" rel="noopener noreferrer">Share on X</a>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-link" id="backLink">&larr; Try another name</a>
+
+    <footer>
+      <p>Inspired by 한류 Korean Wave</p>
+    </footer>
+  </div>
+
+  <script src="js/name-logic.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

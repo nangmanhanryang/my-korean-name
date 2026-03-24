@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 한국어 이름은 | My Korean Name</title>
+  <meta name="description" content="Discover your Korean name based on your name and birthday.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>나의 한국어 이름은</h1>
+      <p class="subtitle">Discover your Korean name &nbsp;/&nbsp; 韓国語の名前を見つけよう</p>
+    </header>
+
+    <main>
+      <form id="nameForm">
+        <div class="form-group">
+          <label for="nameInput">Your Name / お名前</label>
+          <input
+            type="text"
+            id="nameInput"
+            placeholder="e.g. Sarah / さくら / サクラ"
+            autocomplete="given-name"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label for="birthInput">Date of Birth / 生年月日</label>
+          <input type="date" id="birthInput" required>
+        </div>
+        <button type="submit" class="btn-main">Find My Korean Name &rarr;</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>Inspired by 한류 Korean Wave</p>
+    </footer>
+  </div>
+
+  <script src="js/name-logic.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
