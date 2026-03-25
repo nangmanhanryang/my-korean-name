@@ -37,11 +37,11 @@
   --text-muted:       #e0907a;
   --text-body:        #e8c8b8;
   --text-label:       #c08870;
-  --border:           #3d2015;
-  --card-border:      #3a1c10;
+  --border:           #6a3828;
+  --card-border:      #4a2418;
   --card-shadow:      rgba(0, 0, 0, 0.35);
-  --input-bg:         #28150d;
-  --placeholder:      #7a4530;
+  --input-bg:         #3d2218;
+  --placeholder:      #8a5a48;
   --divider:          linear-gradient(90deg, transparent, #3d2015, transparent);
   --badge-bg:         linear-gradient(135deg, #2a1208, #280810);
   --badge-color:      #f0a080;
