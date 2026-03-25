@@ -28,7 +28,7 @@ const UI_STRINGS = {
     siteTitle:        '\u79c1\u306e\u97d3\u56fd\u8a9e\u540d\u306f',
     subtitle:         '\u97d3\u56fd\u8a9e\u306e\u540d\u524d\u3092\u898b\u3064\u3051\u3088\u3046',
     nameLabel:        '\u304a\u540d\u524d',
-    namePlaceholder:  '\u3055\u304f\u3089 / Sarah',
+    namePlaceholder:  '\u3055\u304f\u3089',
     birthLabel:       '\u751f\u5e74\u6708\u65e5',
     yearPlaceholder:  '\u5e74',
     monthPlaceholder: '\u6708',
