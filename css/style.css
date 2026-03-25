@@ -1,5 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Inter:wght@300;400;600&display=swap');
 
+/* ── Theme variables ─────────────────────────────────────── */
+:root {
+  --body-bg:          linear-gradient(160deg, #fff6f0 0%, #ffeee6 50%, #fff0f7 100%);
+  --surface:          #ffffff;
+  --text:             #3a2010;
+  --text-muted:       #c9856e;
+  --text-body:        #7a5040;
+  --text-label:       #c9a090;
+  --border:           #f5ddd4;
+  --card-border:      #fce8de;
+  --card-shadow:      rgba(232, 112, 74, 0.12);
+  --input-bg:         #ffffff;
+  --placeholder:      #e0c0b0;
+  --divider:          linear-gradient(90deg, transparent, #f5ddd4, transparent);
+  --badge-bg:         linear-gradient(135deg, #fff0e6, #ffe4f0);
+  --badge-color:      #d4633a;
+  --badge-border:     #f5d4c4;
+  --hanja-color:      #e8a080;
+  --copy-bg:          #fff0e8;
+  --copy-color:       #c9705a;
+  --copy-border:      #f5ddd4;
+  --back-bg:          #ffffff;
+  --back-color:       #c9705a;
+  --back-border:      #f5ddd4;
+  --back-hover-bg:    #fff5f0;
+  --toggle-bg:        #ffffff;
+  --toggle-border:    #f5ddd4;
+  --toggle-icon:      '🌙';
+}
+
+[data-theme="dark"] {
+  --body-bg:          linear-gradient(160deg, #1c0f08 0%, #20090e 50%, #1a0c14 100%);
+  --surface:          #28150d;
+  --text:             #f0ddd0;
+  --text-muted:       #a07060;
+  --text-body:        #c0a090;
+  --text-label:       #7a5040;
+  --border:           #3d2015;
+  --card-border:      #3a1c10;
+  --card-shadow:      rgba(0, 0, 0, 0.35);
+  --input-bg:         #28150d;
+  --placeholder:      #5a3020;
+  --divider:          linear-gradient(90deg, transparent, #3d2015, transparent);
+  --badge-bg:         linear-gradient(135deg, #2a1208, #280810);
+  --badge-color:      #e09070;
+  --badge-border:     #3d2010;
+  --hanja-color:      #c07858;
+  --copy-bg:          #28150d;
+  --copy-color:       #e09070;
+  --copy-border:      #3d2015;
+  --back-bg:          #28150d;
+  --back-color:       #e09070;
+  --back-border:      #3d2015;
+  --back-hover-bg:    #341c12;
+  --toggle-bg:        #28150d;
+  --toggle-border:    #3d2015;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -8,13 +67,15 @@
 
 body {
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  background: linear-gradient(160deg, #fff6f0 0%, #ffeee6 50%, #fff0f7 100%);
+  background: var(--body-bg);
+  background-attachment: fixed;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  color: #3a2010;
+  color: var(--text);
+  transition: color 0.3s;
 }
 
 .container {
@@ -23,7 +84,31 @@ body {
   text-align: center;
 }
 
-/* ── Header ── */
+/* ── Theme toggle button ─────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--toggle-border);
+  background: var(--toggle-bg);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px var(--card-shadow);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s, border-color 0.3s;
+  z-index: 100;
+}
+.theme-toggle:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 14px var(--card-shadow);
+}
+
+/* ── Header ──────────────────────────────────────────────── */
 header h1 {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 1.85rem;
@@ -38,11 +123,12 @@ header h1 {
 header .subtitle {
   margin-top: 10px;
   font-size: 0.9rem;
-  color: #c9856e;
+  color: var(--text-muted);
   font-weight: 300;
+  transition: color 0.3s;
 }
 
-/* ── Form (index.html) ── */
+/* ── Form ────────────────────────────────────────────────── */
 main {
   margin-top: 44px;
 }
@@ -56,35 +142,36 @@ main {
   display: block;
   font-size: 0.72rem;
   font-weight: 600;
-  color: #c9856e;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.9px;
   margin-bottom: 8px;
+  transition: color 0.3s;
 }
 
 .form-group input {
   width: 100%;
   padding: 14px 18px;
-  border: 1.5px solid #f5ddd4;
+  border: 1.5px solid var(--border);
   border-radius: 16px;
   font-size: 1rem;
   font-family: inherit;
-  background: #fff;
-  color: #3a2010;
+  background: var(--input-bg);
+  color: var(--text);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
 }
 
 .form-group input:focus {
   border-color: #e8703a;
-  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.12);
+  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.15);
 }
 
 .form-group input::placeholder {
-  color: #e0c0b0;
+  color: var(--placeholder);
 }
 
-/* ── Date selects ── */
+/* ── Date selects ────────────────────────────────────────── */
 .date-selects {
   display: flex;
   gap: 8px;
@@ -93,14 +180,14 @@ main {
 .date-selects select {
   flex: 1;
   padding: 14px 8px;
-  border: 1.5px solid #f5ddd4;
+  border: 1.5px solid var(--border);
   border-radius: 16px;
   font-size: 0.95rem;
   font-family: inherit;
-  background: #fff;
-  color: #3a2010;
+  background: var(--input-bg);
+  color: var(--text);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -109,14 +196,10 @@ main {
 
 .date-selects select:focus {
   border-color: #e8703a;
-  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.12);
+  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.15);
 }
 
-.date-selects select.placeholder {
-  color: #e0c0b0;
-}
-
-/* ── Submit button ── */
+/* ── Submit button ───────────────────────────────────────── */
 .btn-main {
   width: 100%;
   margin-top: 10px;
@@ -134,40 +217,43 @@ main {
   letter-spacing: 0.3px;
 }
 
-.btn-main:hover  {
+.btn-main:hover {
   opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(232, 80, 80, 0.32);
+  box-shadow: 0 6px 20px rgba(232, 80, 80, 0.35);
 }
 .btn-main:active { transform: translateY(0); }
 
-/* ── Result card (result.html) ── */
+/* ── Result card ─────────────────────────────────────────── */
 .result-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 24px;
   padding: 40px 32px;
-  box-shadow: 0 4px 32px rgba(232, 112, 74, 0.12);
+  box-shadow: 0 4px 32px var(--card-shadow);
   margin-top: 28px;
-  border: 1px solid #fce8de;
+  border: 1px solid var(--card-border);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
 .season-badge {
   display: inline-block;
   padding: 5px 16px;
-  background: linear-gradient(135deg, #fff0e6, #ffe4f0);
-  color: #d4633a;
+  background: var(--badge-bg);
+  color: var(--badge-color);
   border-radius: 20px;
   font-size: 0.82rem;
   font-weight: 600;
   margin-bottom: 20px;
-  border: 1px solid #f5d4c4;
+  border: 1px solid var(--badge-border);
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .result-name-intro {
   font-size: 0.85rem;
-  color: #c9a090;
+  color: var(--text-label);
   margin-bottom: 12px;
   font-weight: 400;
+  transition: color 0.3s;
 }
 
 .result-korean-name {
@@ -184,22 +270,25 @@ main {
 
 .result-hanja {
   font-size: 1.3rem;
-  color: #e8a080;
+  color: var(--hanja-color);
   margin-top: 10px;
   letter-spacing: 6px;
+  transition: color 0.3s;
 }
 
 .result-pronunciation {
   font-size: 1rem;
-  color: #c9a090;
+  color: var(--text-label);
   margin-top: 8px;
   font-style: italic;
+  transition: color 0.3s;
 }
 
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #f5ddd4, transparent);
+  background: var(--divider);
   margin: 28px 0;
+  transition: background 0.3s;
 }
 
 .result-section {
@@ -212,17 +301,19 @@ main {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #c9a090;
+  color: var(--text-label);
   margin-bottom: 8px;
+  transition: color 0.3s;
 }
 
 .result-section-text {
   font-size: 0.92rem;
-  color: #7a5040;
+  color: var(--text-body);
   line-height: 1.8;
+  transition: color 0.3s;
 }
 
-/* ── Share buttons ── */
+/* ── Share buttons ───────────────────────────────────────── */
 .share-section {
   margin-top: 28px;
 }
@@ -232,8 +323,9 @@ main {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #e0c0b0;
+  color: var(--text-label);
   margin-bottom: 12px;
+  transition: color 0.3s;
 }
 
 .share-buttons {
@@ -250,7 +342,7 @@ main {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  transition: opacity 0.2s, transform 0.1s;
+  transition: opacity 0.2s, transform 0.1s, background 0.3s, color 0.3s;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -260,32 +352,39 @@ main {
 .btn-share:hover  { opacity: 0.85; transform: translateY(-1px); }
 .btn-share:active { transform: translateY(0); }
 
-.btn-copy    { background: #fff0e8; color: #c9705a; border: 1px solid #f5ddd4; }
-.btn-twitter { background: linear-gradient(135deg, #e8703a, #e8407a); color: #fff; }
+.btn-copy {
+  background: var(--copy-bg);
+  color: var(--copy-color);
+  border: 1px solid var(--copy-border) !important;
+}
+.btn-twitter {
+  background: linear-gradient(135deg, #e8703a, #e8407a);
+  color: #fff;
+}
 
-/* ── Back link ── */
+/* ── Back link ───────────────────────────────────────────── */
 .back-link {
   display: inline-block;
   margin-top: 20px;
   padding: 13px 32px;
-  background: #fff;
-  color: #c9705a;
+  background: var(--back-bg);
+  color: var(--back-color);
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
   border-radius: 14px;
-  border: 1.5px solid #f5ddd4;
-  transition: background 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(232, 112, 74, 0.08);
+  border: 1.5px solid var(--back-border);
+  transition: background 0.2s, border-color 0.2s, transform 0.1s, box-shadow 0.2s, color 0.3s;
+  box-shadow: 0 2px 8px var(--card-shadow);
 }
 .back-link:hover {
-  background: #fff5f0;
+  background: var(--back-hover-bg);
   border-color: #e8703a;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(232, 112, 74, 0.15);
+  box-shadow: 0 4px 14px var(--card-shadow);
 }
 
-/* ── Mobile ── */
+/* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .result-korean-name { font-size: 3.5rem; letter-spacing: 8px; }
   .result-card { padding: 32px 24px; }

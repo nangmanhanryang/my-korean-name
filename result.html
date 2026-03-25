@@ -6,8 +6,13 @@
   <title>나의 한국어 이름은 | My Korean Name</title>
   <meta name="description" content="Discover your Korean name based on your name and birthday.">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  </script>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
   <div class="container">
     <header>
       <h1 data-i18n="siteTitle">나의 한국어 이름은</h1>

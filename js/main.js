@@ -1,4 +1,25 @@
 // ============================================================
+// Dark / light mode toggle
+// ============================================================
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+const _savedTheme = localStorage.getItem('theme') || 'light';
+applyTheme(_savedTheme);
+
+const _themeBtn = document.getElementById('themeToggle');
+if (_themeBtn) {
+  _themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('theme', next);
+  });
+}
+
+// ============================================================
 // index.html — date selects population
 // ============================================================
 function populateDateSelects(lang) {
