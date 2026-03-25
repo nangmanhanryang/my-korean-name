@@ -10,27 +10,28 @@
 <body>
   <div class="container">
     <header>
-      <h1>나의 한국어 이름은</h1>
-      <p class="subtitle">Discover your Korean name &nbsp;/&nbsp; 韓国語の名前を見つけよう</p>
+      <h1 data-i18n="siteTitle">나의 한국어 이름은</h1>
+      <p class="subtitle" data-i18n="subtitle">Discover your Korean name</p>
     </header>
 
     <main>
       <form id="nameForm">
         <div class="form-group">
-          <label for="nameInput">Your Name / お名前</label>
+          <label for="nameInput" data-i18n="nameLabel">Your Name</label>
           <input
             type="text"
             id="nameInput"
-            placeholder="e.g. Sarah / さくら / サクラ"
+            placeholder="e.g. Sarah"
+            data-i18n-placeholder="namePlaceholder"
             autocomplete="given-name"
             required
           >
         </div>
         <div class="form-group">
-          <label for="birthInput">Date of Birth / 生年月日</label>
+          <label for="birthInput" data-i18n="birthLabel">Date of Birth</label>
           <input type="date" id="birthInput" required>
         </div>
-        <button type="submit" class="btn-main">Find My Korean Name &rarr;</button>
+        <button type="submit" class="btn-main" data-i18n="submitBtn">Find My Korean Name →</button>
       </form>
     </main>
 
@@ -40,6 +41,7 @@
   </div>
 
   <script src="js/name-logic.js"></script>
+  <script src="js/lang.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

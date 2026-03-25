@@ -204,11 +204,11 @@ function formatPronunciation(romanized) {
 // ============================================================
 // Main: generate Korean name
 // ============================================================
-function generateKoreanName(inputName, birthDate) {
+function generateKoreanName(inputName, birthDate, uiLang = 'en') {
   const [year, month, day] = birthDate.split('-').map(Number);
-  const lang = detectLanguage(inputName);
+  const inputLang = detectLanguage(inputName); // 'ja' if kana, else 'en'
 
-  const firstSyl = lang === 'ja'
+  const firstSyl = inputLang === 'ja'
     ? getJapaneseFirstSyllable(inputName)
     : getEnglishFirstSyllable(inputName);
 
@@ -216,11 +216,11 @@ function generateKoreanName(inputName, birthDate) {
   const koreanName = firstSyl + secondCharData.ko;
   const pronunciation = formatPronunciation(romanize(koreanName));
   const season = getSeason(month);
-  const personality = PERSONALITY[lang === 'ja' ? 'ja' : 'en'][season];
+  const personality = PERSONALITY[uiLang][season];
 
-  const nameMeaning = lang === 'ja'
+  const nameMeaning = uiLang === 'ja'
     ? `「${firstSyl}」はあなたの名前「${inputName}」の響きから生まれ、「${secondCharData.ko}」(${secondCharData.hanja})は${secondCharData.ja}という意味を持ちます。`
     : `"${firstSyl}" captures the sound of your name "${inputName}", and "${secondCharData.ko}" (${secondCharData.hanja}) means ${secondCharData.en}.`;
 
-  return { koreanName, hanja: secondCharData.hanja, pronunciation, nameMeaning, personality, season, lang, inputName, birthDate };
+  return { koreanName, hanja: secondCharData.hanja, pronunciation, nameMeaning, personality, season, inputName, birthDate };
 }
