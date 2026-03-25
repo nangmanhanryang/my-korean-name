@@ -80,6 +80,36 @@ main {
   color: #ccc;
 }
 
+.date-selects {
+  display: flex;
+  gap: 8px;
+}
+
+.date-selects select {
+  flex: 1;
+  padding: 14px 8px;
+  border: 1.5px solid #e8e8ec;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #fff;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+}
+
+.date-selects select:focus {
+  border-color: #a78bfa;
+}
+
+.date-selects select.placeholder {
+  color: #ccc;
+}
+
 .btn-main {
   width: 100%;
   margin-top: 8px;

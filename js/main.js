@@ -1,14 +1,55 @@
 // ============================================================
+// index.html — date selects population
+// ============================================================
+function populateDateSelects(lang) {
+  const yearSel  = document.getElementById('birthYear');
+  const monthSel = document.getElementById('birthMonth');
+  const daySel   = document.getElementById('birthDay');
+  if (!yearSel) return;
+
+  const s    = UI_STRINGS[lang];
+  const yVal = yearSel.value;
+  const mVal = monthSel.value;
+  const dVal = daySel.value;
+
+  const thisYear = new Date().getFullYear();
+  yearSel.innerHTML  = `<option value="">${s.yearPlaceholder}</option>`;
+  monthSel.innerHTML = `<option value="">${s.monthPlaceholder}</option>`;
+  daySel.innerHTML   = `<option value="">${s.dayPlaceholder}</option>`;
+
+  for (let y = thisYear; y >= 1940; y--) {
+    yearSel.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+  for (let m = 1; m <= 12; m++) {
+    const v = String(m).padStart(2, '0');
+    monthSel.innerHTML += `<option value="${v}">${m}</option>`;
+  }
+  for (let d = 1; d <= 31; d++) {
+    const v = String(d).padStart(2, '0');
+    daySel.innerHTML += `<option value="${v}">${d}</option>`;
+  }
+
+  yearSel.value  = yVal;
+  monthSel.value = mVal;
+  daySel.value   = dVal;
+}
+
+// ============================================================
 // index.html — form submission (added immediately, no lang needed)
 // ============================================================
 const form = document.getElementById('nameForm');
 if (form) {
+  populateDateSelects(getNavLang());
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const name  = document.getElementById('nameInput').value.trim();
-    const birth = document.getElementById('birthInput').value;
-    if (!name || !birth) return;
-    const lang = window.LANG || 'en';
+    const year  = document.getElementById('birthYear').value;
+    const month = document.getElementById('birthMonth').value;
+    const day   = document.getElementById('birthDay').value;
+    if (!name || !year || !month || !day) return;
+    const birth = `${year}-${month}-${day}`;
+    const lang  = window.LANG || 'en';
     window.location.href = `result.html?name=${encodeURIComponent(name)}&birth=${encodeURIComponent(birth)}&lang=${lang}`;
   });
 }
@@ -20,6 +61,7 @@ applyUIStrings(getNavLang());
 detectUILang().then(lang => {
   window.LANG = lang;
   applyUIStrings(lang);
+  populateDateSelects(lang);
   document.title = UI_STRINGS[lang].siteTitle;
 
   // result.html — read params and render (waits for lang detection)
