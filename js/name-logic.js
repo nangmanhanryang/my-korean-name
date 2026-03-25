@@ -1,152 +1,154 @@
 // ============================================================
-// Korean syllable builder
+// First syllable: curated pools by initial-sound category
+// Each pool contains only syllables actually used in Korean names.
 // ============================================================
-const CHO_IDX = { ㄱ:0, ㄴ:2, ㄷ:3, ㄹ:5, ㅁ:6, ㅂ:7, ㅅ:9, ㅇ:11, ㅈ:12, ㅊ:14, ㅋ:15, ㅌ:16, ㅍ:17, ㅎ:18 };
-const JUNG_IDX = { ㅏ:0, ㅐ:1, ㅑ:2, ㅓ:4, ㅔ:5, ㅕ:6, ㅗ:8, ㅛ:12, ㅜ:13, ㅠ:17, ㅡ:18, ㅣ:20 };
+const FIRST_POOLS = {
+  vowel: ['아', '은', '예', '온', '유', '이'],
+  b:     ['보', '별', '봄'],
+  d:     ['다', '달', '도'],
+  g:     ['가', '결', '기'],
+  h:     ['하', '혜', '희'],
+  j:     ['재', '지', '진'],
+  k:     ['경', '기', '결'],
+  l:     ['라', '리', '린'],
+  m:     ['민', '미', '명'],
+  n:     ['나', '남'],
+  p:     ['빛', '보', '봄'],
+  r:     ['라', '리', '린'],
+  s:     ['서', '소', '솔'],
+  t:     ['태', '탄'],
+  w:     ['우', '원'],
+  y:     ['유', '예', '연'],
+  z:     ['지', '주'],
+};
 
-function makeSyllable(cho, jung) {
-  const c = CHO_IDX[cho];
-  const v = JUNG_IDX[jung];
-  if (c === undefined || v === undefined) return '아';
-  return String.fromCharCode(0xAC00 + (c * 21 + v) * 28);
+function getEnglishCategory(name) {
+  const c = name.toLowerCase().replace(/[^a-z]/g, '')[0] || '';
+  const map = {
+    a:'vowel', e:'vowel', i:'vowel', o:'vowel', u:'vowel',
+    b:'b', c:'k', d:'d', f:'h', g:'g', h:'h',
+    j:'j', k:'k', l:'l', m:'m', n:'n', p:'p',
+    q:'k', r:'r', s:'s', t:'t', v:'b', w:'w',
+    x:'s', y:'y', z:'z',
+  };
+  return map[c] || 'vowel';
+}
+
+function getKanaCategory(name) {
+  const ch = name[0] || '';
+  if ('あいうえおアイウエオわをんワヲン'.includes(ch))                        return 'vowel';
+  if ('かきくけこがぎぐげごカキクケコガギグゲゴ'.includes(ch))               return 'k';
+  if ('さしすせそざじずぜぞサシスセソザジズゼゾ'.includes(ch))               return 's';
+  if ('たちつてとだぢづでどタチツテトダヂヅデド'.includes(ch))               return 't';
+  if ('なにぬねのナニヌネノ'.includes(ch))                                    return 'n';
+  if ('はひふへほばびぶべぼぱぴぷぺぽハヒフヘホバビブベボパピプペポ'.includes(ch)) return 'h';
+  if ('まみむめもマミムメモ'.includes(ch))                                    return 'm';
+  if ('やゆよヤユヨ'.includes(ch))                                            return 'y';
+  if ('らりるれろラリルレロ'.includes(ch))                                    return 'r';
+  return 'vowel';
+}
+
+function getFirstSyllable(name, inputLang, seed) {
+  const category = inputLang === 'ja' ? getKanaCategory(name) : getEnglishCategory(name);
+  const pool = FIRST_POOLS[category] || FIRST_POOLS.vowel;
+  return pool[seed % pool.length];
 }
 
 // ============================================================
-// Language detection
+// Language detection (input name)
 // ============================================================
 function detectLanguage(name) {
   return /[\u3040-\u309F\u30A0-\u30FF]/.test(name) ? 'ja' : 'en';
 }
 
 // ============================================================
-// Japanese kana → Korean syllable
+// Second syllable: 3 options per birth month
+// Birth day is used to choose among them for variety.
 // ============================================================
-const KANA_TO_KO = {
-  'あ':'아','い':'이','う':'우','え':'에','お':'오',
-  'か':'가','き':'기','く':'구','け':'게','こ':'고',
-  'さ':'사','し':'시','す':'수','せ':'세','そ':'소',
-  'た':'타','ち':'치','つ':'츠','て':'테','と':'토',
-  'な':'나','に':'니','ぬ':'누','ね':'네','の':'노',
-  'は':'하','ひ':'히','ふ':'후','へ':'헤','ほ':'호',
-  'ま':'마','み':'미','む':'무','め':'메','も':'모',
-  'や':'야','ゆ':'유','よ':'요',
-  'ら':'라','り':'리','る':'루','れ':'레','ろ':'로',
-  'わ':'와','を':'오','ん':'은',
-  'が':'가','ぎ':'기','ぐ':'구','げ':'게','ご':'고',
-  'ざ':'자','じ':'지','ず':'주','ぜ':'제','ぞ':'조',
-  'だ':'다','ぢ':'지','づ':'주','で':'데','ど':'도',
-  'ば':'바','び':'비','ぶ':'부','べ':'베','ぼ':'보',
-  'ぱ':'파','ぴ':'피','ぷ':'푸','ぺ':'페','ぽ':'포',
-  'ア':'아','イ':'이','ウ':'우','エ':'에','オ':'오',
-  'カ':'가','キ':'기','ク':'구','ケ':'게','コ':'고',
-  'サ':'사','シ':'시','ス':'수','セ':'세','ソ':'소',
-  'タ':'타','チ':'치','ツ':'츠','テ':'테','ト':'토',
-  'ナ':'나','ニ':'니','ヌ':'누','ネ':'네','ノ':'노',
-  'ハ':'하','ヒ':'히','フ':'후','ヘ':'헤','ホ':'호',
-  'マ':'마','ミ':'미','ム':'무','メ':'메','モ':'모',
-  'ヤ':'야','ユ':'유','ヨ':'요',
-  'ラ':'라','リ':'리','ル':'루','レ':'레','ロ':'로',
-  'ワ':'와','ヲ':'오','ン':'은',
-  'ガ':'가','ギ':'기','グ':'구','ゲ':'게','ゴ':'고',
-  'ザ':'자','ジ':'지','ズ':'주','ゼ':'제','ゾ':'조',
-  'ダ':'다','ヂ':'지','ヅ':'주','デ':'데','ド':'도',
-  'バ':'바','ビ':'비','ブ':'부','ベ':'베','ボ':'보',
-  'パ':'파','ピ':'피','プ':'푸','ペ':'페','ポ':'포',
-};
-
-function getJapaneseFirstSyllable(name) {
-  for (let i = 0; i < name.length; i++) {
-    if (KANA_TO_KO[name[i]]) return KANA_TO_KO[name[i]];
-  }
-  return getEnglishFirstSyllable(name);
-}
-
-// ============================================================
-// English → Korean first syllable
-// ============================================================
-function getEnglishFirstSyllable(name) {
-  const s = name.toLowerCase().replace(/[^a-z]/g, '');
-  if (!s) return '아';
-
-  let cho = 'ㅇ';
-  let vowelStart = 0;
-
-  const digraphs = { sh:'ㅅ', ch:'ㅊ', th:'ㄷ', ph:'ㅍ', wh:'ㅎ' };
-  if (digraphs[s.slice(0, 2)]) {
-    cho = digraphs[s.slice(0, 2)];
-    vowelStart = 2;
-  } else if (!'aeiou'.includes(s[0])) {
-    const cmap = {
-      b:'ㅂ', c:'ㄱ', d:'ㄷ', f:'ㅍ', g:'ㄱ', h:'ㅎ', j:'ㅈ', k:'ㄱ',
-      l:'ㄹ', m:'ㅁ', n:'ㄴ', p:'ㅍ', q:'ㄱ', r:'ㄹ', s:'ㅅ', t:'ㅌ',
-      v:'ㅂ', w:'ㅇ', x:'ㅅ', y:'ㅇ', z:'ㅈ'
-    };
-    cho = cmap[s[0]] || 'ㅇ';
-    vowelStart = 1;
-  }
-
-  let vIdx = -1;
-  for (let i = vowelStart; i < s.length; i++) {
-    if ('aeiou'.includes(s[i])) { vIdx = i; break; }
-  }
-  if (vIdx === -1) return makeSyllable(cho, 'ㅏ');
-
-  const v = s[vIdx];
-  const n1 = s[vIdx + 1] || '';
-
-  // Y + vowel → compound vowel
-  if (s[0] === 'y' && vIdx === 1) {
-    const yv = { a:'ㅑ', e:'ㅖ', i:'ㅣ', o:'ㅛ', u:'ㅠ' };
-    return makeSyllable('ㅇ', yv[v] || 'ㅏ');
-  }
-
-  let jung = 'ㅏ';
-  if (v === 'a') {
-    if (n1 === 'y' || n1 === 'i') jung = 'ㅔ';
-    else if (n1 === 'r') jung = 'ㅏ';
-    else jung = 'ㅏ';
-  } else if (v === 'e') {
-    if (n1 === 'e' || n1 === 'a') jung = 'ㅣ';
-    else if (n1 === 'r') jung = 'ㅓ';
-    else jung = 'ㅔ';
-  } else if (v === 'i') {
-    jung = n1 === 'r' ? 'ㅓ' : 'ㅣ';
-  } else if (v === 'o') {
-    if (n1 === 'o' || n1 === 'u') jung = 'ㅜ';
-    else if (n1 === 'r') jung = 'ㅓ';
-    else jung = 'ㅗ';
-  } else if (v === 'u') {
-    jung = n1 === 'r' ? 'ㅓ' : 'ㅜ';
-  }
-
-  return makeSyllable(cho, jung);
-}
-
-// ============================================================
-// Birth month → second character
-// ============================================================
-const MONTH_DATA = [
-  { ko:'휘', hanja:'輝', en:'radiant light',       ja:'輝くような' },
-  { ko:'린', hanja:'隣', en:'warm and kind',        ja:'温かく優しい' },
-  { ko:'화', hanja:'花', en:'like a flower',        ja:'花のような' },
-  { ko:'춘', hanja:'春', en:'spirit of spring',     ja:'春の精霊' },
-  { ko:'윤', hanja:'潤', en:'lush and abundant',    ja:'豊かで潤いある' },
-  { ko:'하', hanja:'夏', en:'summer passion',       ja:'夏の情熱' },
-  { ko:'서', hanja:'曙', en:'dawn light',           ja:'夜明けの光' },
-  { ko:'아', hanja:'雅', en:'elegant',              ja:'優雅な' },
-  { ko:'가', hanja:'佳', en:'beautiful',            ja:'美しい' },
-  { ko:'결', hanja:'潔', en:'pure and clear',       ja:'清純な' },
-  { ko:'설', hanja:'雪', en:'clear as snow',        ja:'雪のように清い' },
-  { ko:'동', hanja:'冬', en:'winter stillness',     ja:'冬の静けさ' },
+const MONTH_OPTIONS = [
+  // January
+  [
+    { ko:'희', hanja:'熙', en:'radiant joy',              ja:'輝く喜び' },
+    { ko:'빛', hanja:'光', en:'pure light',               ja:'純粋な光' },
+    { ko:'한', hanja:'閒', en:'serene stillness',         ja:'穏やかな静けさ' },
+  ],
+  // February
+  [
+    { ko:'린', hanja:'隣', en:'warm and kind',            ja:'温かく優しい' },
+    { ko:'연', hanja:'然', en:'naturally at ease',        ja:'自然体で穏やか' },
+    { ko:'온', hanja:'溫', en:'gentle warmth',            ja:'穏やかな温もり' },
+  ],
+  // March
+  [
+    { ko:'화', hanja:'花', en:'blooming flower',          ja:'咲き誇る花' },
+    { ko:'채', hanja:'彩', en:'colorful radiance',        ja:'色鮮やかな輝き' },
+    { ko:'봄', hanja:'春', en:'spirit of spring',         ja:'春の精神' },
+  ],
+  // April
+  [
+    { ko:'춘', hanja:'春', en:'breath of spring',         ja:'春の息吹' },
+    { ko:'솔', hanja:'率', en:'honest and true',          ja:'誠実で真っ直ぐ' },
+    { ko:'예', hanja:'叡', en:'wise and bright',          ja:'賢く聡明' },
+  ],
+  // May
+  [
+    { ko:'윤', hanja:'潤', en:'lush and abundant',        ja:'豊かで潤いある' },
+    { ko:'수', hanja:'秀', en:'outstanding grace',        ja:'卓越した優雅さ' },
+    { ko:'결', hanja:'潔', en:'pure and clear',           ja:'清らかで澄んだ' },
+  ],
+  // June
+  [
+    { ko:'하', hanja:'夏', en:'summer warmth',            ja:'夏の温かさ' },
+    { ko:'진', hanja:'眞', en:'true and sincere',         ja:'真摯で誠実' },
+    { ko:'선', hanja:'宣', en:'radiant presence',         ja:'輝く存在感' },
+  ],
+  // July
+  [
+    { ko:'서', hanja:'曙', en:'dawn light',               ja:'夜明けの光' },
+    { ko:'준', hanja:'俊', en:'talented and bright',      ja:'才能豊かで輝く' },
+    { ko:'도', hanja:'道', en:'the right path',           ja:'正しい道' },
+  ],
+  // August
+  [
+    { ko:'아', hanja:'雅', en:'elegant grace',            ja:'優雅な気品' },
+    { ko:'강', hanja:'剛', en:'inner strength',           ja:'内なる強さ' },
+    { ko:'현', hanja:'賢', en:'wise and brilliant',       ja:'賢く輝く' },
+  ],
+  // September
+  [
+    { ko:'가', hanja:'佳', en:'beautiful inside and out', ja:'内外ともに美しい' },
+    { ko:'민', hanja:'敏', en:'quick and perceptive',     ja:'素早く洞察力がある' },
+    { ko:'나', hanja:'娜', en:'graceful and lovely',      ja:'優雅で愛らしい' },
+  ],
+  // October
+  [
+    { ko:'원', hanja:'源', en:'deep wellspring',          ja:'深い源泉' },
+    { ko:'은', hanja:'恩', en:'grace and blessing',       ja:'恵みと祝福' },
+    { ko:'지', hanja:'智', en:'wisdom and insight',       ja:'知恵と洞察力' },
+  ],
+  // November
+  [
+    { ko:'설', hanja:'雪', en:'clear as snow',            ja:'雪のように清らか' },
+    { ko:'유', hanja:'悠', en:'calm and timeless',        ja:'穏やかで悠久' },
+    { ko:'승', hanja:'昇', en:'rising above',             ja:'高みへと昇る' },
+  ],
+  // December
+  [
+    { ko:'동', hanja:'冬', en:'winter stillness',         ja:'冬の静けさ' },
+    { ko:'성', hanja:'星', en:'bright as a star',         ja:'星のように輝く' },
+    { ko:'영', hanja:'永', en:'everlasting spirit',       ja:'永遠の精神' },
+  ],
 ];
 
-function getSecondChar(month, excludeChar) {
-  let data = MONTH_DATA[month - 1];
-  if (data.ko === excludeChar) {
-    const altMonth = month === 1 ? 12 : month - 1;
-    data = MONTH_DATA[altMonth - 1];
+function getSecondChar(month, firstSyl, seed) {
+  const options = MONTH_OPTIONS[month - 1];
+  let idx = seed % options.length;
+  // Avoid collision with first syllable
+  for (let i = 0; i < options.length; i++) {
+    if (options[idx].ko !== firstSyl) break;
+    idx = (idx + 1) % options.length;
   }
-  return data;
+  return options[idx];
 }
 
 // ============================================================
@@ -164,7 +166,7 @@ const PERSONALITY = {
     summer: "夏に生まれたあなたは、情熱と活力にあふれています。大胆で表現豊かで、どこにいても目を引く存在感があります。",
     autumn: "秋に生まれたあなたは、年齢を超えた深みと静かな知恵を持っています。思慮深く芸術的で、世界を鋭く見つめる目を持っています。",
     winter: "冬に生まれたあなたは、稀有な静かな強さを持っています。穏やかで粘り強く、近くにいる人みんなに安定した温かさを与えます。",
-  }
+  },
 };
 
 function getSeason(month) {
@@ -206,21 +208,22 @@ function formatPronunciation(romanized) {
 // ============================================================
 function generateKoreanName(inputName, birthDate, uiLang = 'en') {
   const [year, month, day] = birthDate.split('-').map(Number);
-  const inputLang = detectLanguage(inputName); // 'ja' if kana, else 'en'
+  const inputLang = detectLanguage(inputName);
 
-  const firstSyl = inputLang === 'ja'
-    ? getJapaneseFirstSyllable(inputName)
-    : getEnglishFirstSyllable(inputName);
+  // Deterministic seed: sum of char codes + birth day
+  const nameSeed = inputName.split('').reduce((s, c) => s + c.charCodeAt(0), 0);
+  const seed = nameSeed + day;
 
-  const secondCharData = getSecondChar(month, firstSyl);
-  const koreanName = firstSyl + secondCharData.ko;
+  const firstSyl      = getFirstSyllable(inputName, inputLang, seed);
+  const secondCharData = getSecondChar(month, firstSyl, seed);
+  const koreanName    = firstSyl + secondCharData.ko;
   const pronunciation = formatPronunciation(romanize(koreanName));
-  const season = getSeason(month);
-  const personality = PERSONALITY[uiLang][season];
+  const season        = getSeason(month);
+  const personality   = PERSONALITY[uiLang][season];
 
   const nameMeaning = uiLang === 'ja'
-    ? `「${firstSyl}」はあなたの名前「${inputName}」の響きから生まれ、「${secondCharData.ko}」(${secondCharData.hanja})は${secondCharData.ja}という意味を持ちます。`
-    : `"${firstSyl}" captures the sound of your name "${inputName}", and "${secondCharData.ko}" (${secondCharData.hanja}) means ${secondCharData.en}.`;
+    ? `「${firstSyl}」はあなたの名前「${inputName}」から生まれ、「${secondCharData.ko}」(${secondCharData.hanja})は${secondCharData.ja}という意味を持ちます。`
+    : `"${firstSyl}" is inspired by your name "${inputName}", and "${secondCharData.ko}" (${secondCharData.hanja}) means ${secondCharData.en}.`;
 
   return { koreanName, hanja: secondCharData.hanja, pronunciation, nameMeaning, personality, season, inputName, birthDate };
 }
