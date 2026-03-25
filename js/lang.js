@@ -80,7 +80,8 @@ async function detectUILang() {
 
 // Apply UI_STRINGS to elements with data-i18n / data-i18n-placeholder
 function applyUIStrings(lang) {
-  document.documentElement.lang = lang; // controls date picker format
+  document.documentElement.lang = lang;
+  document.querySelectorAll('input[type="date"]').forEach(el => { el.lang = lang; });
   const s = UI_STRINGS[lang];
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const val = s[el.dataset.i18n];
