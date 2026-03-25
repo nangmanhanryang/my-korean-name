@@ -8,13 +8,13 @@
 
 body {
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
-  background: #f7f7f9;
-  color: #1a1a2e;
+  background: linear-gradient(160deg, #fff6f0 0%, #ffeee6 50%, #fff0f7 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
+  color: #3a2010;
 }
 
 .container {
@@ -26,22 +26,25 @@ body {
 /* ── Header ── */
 header h1 {
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 700;
   letter-spacing: -0.5px;
-  color: #1a1a2e;
+  background: linear-gradient(135deg, #e8603a, #e8407a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 header .subtitle {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 0.9rem;
-  color: #999;
+  color: #c9856e;
   font-weight: 300;
 }
 
 /* ── Form (index.html) ── */
 main {
-  margin-top: 48px;
+  margin-top: 44px;
 }
 
 .form-group {
@@ -51,35 +54,37 @@ main {
 
 .form-group label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #888;
+  color: #c9856e;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.9px;
   margin-bottom: 8px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 14px 16px;
-  border: 1.5px solid #e8e8ec;
-  border-radius: 12px;
+  padding: 14px 18px;
+  border: 1.5px solid #f5ddd4;
+  border-radius: 16px;
   font-size: 1rem;
   font-family: inherit;
   background: #fff;
-  color: #1a1a2e;
+  color: #3a2010;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus {
-  border-color: #a78bfa;
+  border-color: #e8703a;
+  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.12);
 }
 
 .form-group input::placeholder {
-  color: #ccc;
+  color: #e0c0b0;
 }
 
+/* ── Date selects ── */
 .date-selects {
   display: flex;
   gap: 8px;
@@ -88,14 +93,14 @@ main {
 .date-selects select {
   flex: 1;
   padding: 14px 8px;
-  border: 1.5px solid #e8e8ec;
-  border-radius: 12px;
+  border: 1.5px solid #f5ddd4;
+  border-radius: 16px;
   font-size: 0.95rem;
   font-family: inherit;
   background: #fff;
-  color: #1a1a2e;
+  color: #3a2010;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -103,54 +108,64 @@ main {
 }
 
 .date-selects select:focus {
-  border-color: #a78bfa;
+  border-color: #e8703a;
+  box-shadow: 0 0 0 3px rgba(232, 112, 58, 0.12);
 }
 
 .date-selects select.placeholder {
-  color: #ccc;
+  color: #e0c0b0;
 }
 
+/* ── Submit button ── */
 .btn-main {
   width: 100%;
-  margin-top: 8px;
-  padding: 15px;
-  background: #1a1a2e;
+  margin-top: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, #e8703a, #e8407a);
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(232, 80, 80, 0.25);
+  letter-spacing: 0.3px;
 }
 
-.btn-main:hover  { background: #2e2e4a; transform: translateY(-1px); }
+.btn-main:hover  {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(232, 80, 80, 0.32);
+}
 .btn-main:active { transform: translateY(0); }
 
 /* ── Result card (result.html) ── */
 .result-card {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 40px 32px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 32px rgba(232, 112, 74, 0.12);
   margin-top: 28px;
+  border: 1px solid #fce8de;
 }
 
 .season-badge {
   display: inline-block;
-  padding: 4px 14px;
-  background: #f3e8ff;
-  color: #7c3aed;
+  padding: 5px 16px;
+  background: linear-gradient(135deg, #fff0e6, #ffe4f0);
+  color: #d4633a;
   border-radius: 20px;
   font-size: 0.82rem;
   font-weight: 600;
   margin-bottom: 20px;
+  border: 1px solid #f5d4c4;
 }
 
 .result-name-intro {
   font-size: 0.85rem;
-  color: #aaa;
+  color: #c9a090;
   margin-bottom: 12px;
   font-weight: 400;
 }
@@ -159,28 +174,31 @@ main {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 4.5rem;
   font-weight: 700;
-  color: #1a1a2e;
   letter-spacing: 12px;
   line-height: 1;
+  background: linear-gradient(135deg, #e8603a, #e8407a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .result-hanja {
   font-size: 1.3rem;
-  color: #a78bfa;
+  color: #e8a080;
   margin-top: 10px;
   letter-spacing: 6px;
 }
 
 .result-pronunciation {
   font-size: 1rem;
-  color: #aaa;
+  color: #c9a090;
   margin-top: 8px;
   font-style: italic;
 }
 
 .divider {
   height: 1px;
-  background: #f0f0f4;
+  background: linear-gradient(90deg, transparent, #f5ddd4, transparent);
   margin: 28px 0;
 }
 
@@ -194,14 +212,14 @@ main {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #bbb;
+  color: #c9a090;
   margin-bottom: 8px;
 }
 
 .result-section-text {
   font-size: 0.92rem;
-  color: #555;
-  line-height: 1.75;
+  color: #7a5040;
+  line-height: 1.8;
 }
 
 /* ── Share buttons ── */
@@ -214,7 +232,7 @@ main {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #ccc;
+  color: #e0c0b0;
   margin-bottom: 12px;
 }
 
@@ -226,7 +244,7 @@ main {
 .btn-share {
   flex: 1;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 14px;
   font-size: 0.88rem;
   font-weight: 600;
   font-family: inherit;
@@ -242,25 +260,25 @@ main {
 .btn-share:hover  { opacity: 0.85; transform: translateY(-1px); }
 .btn-share:active { transform: translateY(0); }
 
-.btn-copy    { background: #f0f0f4; color: #444; }
-.btn-twitter { background: #1a1a2e; color: #fff; }
+.btn-copy    { background: #fff0e8; color: #c9705a; border: 1px solid #f5ddd4; }
+.btn-twitter { background: linear-gradient(135deg, #e8703a, #e8407a); color: #fff; }
 
 /* ── Back link ── */
 .back-link {
   display: inline-block;
   margin-top: 24px;
-  color: #ccc;
+  color: #e0b8a8;
   font-size: 0.82rem;
   text-decoration: none;
   transition: color 0.2s;
 }
-.back-link:hover { color: #888; }
+.back-link:hover { color: #c9856e; }
 
 /* ── Footer ── */
 footer {
   margin-top: 36px;
   font-size: 0.78rem;
-  color: #ccc;
+  color: #e0b8a8;
 }
 
 /* ── Mobile ── */
